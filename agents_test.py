@@ -7,7 +7,7 @@ import fast_agents
 
 from agent_interface import Agent
 from agent_runner import run_agent, get_reward_from_trajectory
-from gridworld.gridworld import GridworldMdp, Direction
+from gridworld import GridworldMdp, Direction
 from mdp_interface import Mdp
 from model import tf_value_iter_no_config
 from utils import Distribution, set_seeds
@@ -261,8 +261,8 @@ class ValueIterationAgent(Agent):
         self.num_iters = num_iters
 
     def create_tf_graph(self, imsize, noise):
-        self.wall_tf = tf.placeholder(tf.float32, shape=(imsize, imsize))
-        self.reward_tf = tf.placeholder(tf.float32, shape=(imsize, imsize))
+        self.wall_tf = tf.compat.v1.placeholder(tf.float32, shape=(imsize, imsize))
+        self.reward_tf = tf.compat.v1.placeholder(tf.float32, shape=(imsize, imsize))
         a = tf.reshape(self.wall_tf, [1, imsize, imsize])
         b = tf.reshape(self.reward_tf, [1, imsize, imsize])
         X = tf.stack([a, b],axis=-1)
@@ -274,12 +274,12 @@ class ValueIterationAgent(Agent):
     def set_mdp(self, mdp, reward_mdp=None):
         assert reward_mdp is None
         super(ValueIterationAgent, self).set_mdp(mdp)
-        sess = tf.InteractiveSession()
+        sess = tf.compat.v1.InteractiveSession()
         walls, reward, _ = mdp.convert_to_numpy_input()
         height, width = len(walls), len(walls[0])
         assert height == width
         self.create_tf_graph(height, mdp.noise)
-        with tf.Session() as sess:
+        with tf.compat.v1.Session() as sess:
             fd = {
                 self.wall_tf: walls,
                 self.reward_tf: reward,

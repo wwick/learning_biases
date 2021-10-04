@@ -2,8 +2,8 @@ import tensorflow as tf
 import numpy as np
 from model import tf_value_iter_no_config
 from agents import OptimalAgent
-from gridworld.gridworld import GridworldMdp
-sess = tf.InteractiveSession()
+from gridworld import GridworldMdp
+sess = tf.compat.v1.InteractiveSession()
 
 walls  = [[1, 1, 1, 1, 1],
           [1, 0, 0, 0, 1],
@@ -49,8 +49,8 @@ def run_test(walls, reward):
     agent.set_mdp(mdp)
     true_values = castAgentValuesToNumpy(agent.values)
 
-    wall_tf = tf.placeholder(shape=(imsize,imsize),dtype=tf.float32)
-    reward_tf = tf.placeholder(tf.float32, shape=(imsize, imsize))
+    wall_tf = tf.compat.v1.placeholder(shape=(imsize,imsize),dtype=tf.float32)
+    reward_tf = tf.compat.v1.placeholder(tf.float32, shape=(imsize, imsize))
     q_vals = test_model(wall_tf, reward_tf, tf_value_iter_model)
     out = sess.run(q_vals, feed_dict={wall_tf:walls, reward_tf:reward})
     out = np.reshape(out, (imsize*imsize,5))
