@@ -3,7 +3,7 @@ import tensorflow as tf
 import numpy as np
 import random
 import matplotlib
-matplotlib.use("tkagg")
+# matplotlib.use("tkagg")
 import seaborn as sns
 import matplotlib.pyplot as plt
 
