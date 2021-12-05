@@ -7,9 +7,12 @@ class Mdp(object):
     it as the agent takes actions, and provides rewards to the agent.
     """
 
-    def __init__(self, mdp):
+    def __init__(self, mdp, state=None):
         self.gridworld = mdp
-        self.reset()
+        if state is None:
+            self.reset()
+        else:
+            self.state = state
 
     def get_current_state(self):
         return self.state
